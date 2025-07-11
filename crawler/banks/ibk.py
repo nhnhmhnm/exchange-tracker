@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 from config import CHROME_DRIVER_PATH
 from datetime import datetime
 
-from banks.enums import Bank, Currency
+from utils.enums import Bank, Currency
+from utils.notice_time import parse_notice_time
 
 def get_ibk(currency: Currency) -> dict | None :
     url = "https://www.ibk.co.kr/fxtr/excRateList.ibk?pageId=SM03020100"
@@ -20,23 +21,16 @@ def get_ibk(currency: Currency) -> dict | None :
         driver.get(url)
 
         # 고시완료 시각
-        # 성공하면 시각 파싱 후 저장, 실패하면 현재 시각 저장
         try :
             time_tag = driver.find_element(By.CLASS_NAME, "standard")
-            time_text = time_tag.text.split()[3]
+            time_text = time_tag.text.strip()
             print(f"[INFO] IBK {time_text}")
 
             # 파싱
-            time_str = time_text.split(":")[-1].strip()
-            now = datetime.now().replace(
-                hour=int(time_str[0:2]),
-                minute=int(time_str[3:5]),
-                second=int(time_str[6:8]),
-                microsecond=0
-            )
+            timestamp = parse_notice_time(time_text)
 
         except Exception as e :
-            now = datetime.now()
+            timestamp = datetime.now()
             print(f"[WARN] IBK 고시완료 시각 파싱 실패 {e}")
 
         # 매매기준율
@@ -59,7 +53,7 @@ def get_ibk(currency: Currency) -> dict | None :
                         "bank": Bank.IBK.value,
                         "currency": currency.value,
                         "rate": rate,
-                        "timestamp": now
+                        "timestamp": timestamp
                     }
 
         print(f"[WARN] IBK {currency.value} 데이터를 찾지 못함")
