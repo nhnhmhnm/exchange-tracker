@@ -1,5 +1,5 @@
 from banks.ibk import get_ibk
-from banks.enums import Currency
+from utils.enums import Currency
 from utils.DBconnect import insert_rate
 
 def crawl_ibk():
