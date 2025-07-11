@@ -1,18 +1,17 @@
-from banks.ibk import get_ibk_usd_rate
+from banks.ibk import get_ibk
+from banks.enums import Currency
 from utils.DBconnect import insert_rate
-from datetime import datetime
 
 def crawl_ibk():
-    result = get_ibk_usd_rate()
-    if result:
-        insert_rate(
-            bank=result["bank"],
-            currency=result["currency"],
-            rate=result["rate"],
-            timestamp=result["timestamp"]
-        )
-    else:
-        print(f"[{datetime.now()}] main IBK 크롤링 실패")
+    for currency in Currency :
+        rates = get_ibk(currency)
 
-if __name__ == "__main__":
+        if rates :
+            insert_rate(**rates)
+            print(f"[SUCCESS] {currency.value} 저장 완료")
+
+    else:
+        print(f"[FAIL] {currency.value} 저장 실패")
+
+if __name__ == "__main__" :
     crawl_ibk()
