@@ -9,9 +9,8 @@ def crawl_ibk():
         if rates :
             insert_rate(**rates)
             print(f"[SUCCESS] {currency.value} 저장 완료")
-
-    else:
-        print(f"[FAIL] {currency.value} 저장 실패")
+        else:
+            print(f"[FAIL] {currency.value} 저장 실패")
 
 if __name__ == "__main__" :
     crawl_ibk()
