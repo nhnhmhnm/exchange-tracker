@@ -1,7 +1,8 @@
 from enum import Enum
 
 class Bank(str, Enum):
-    IBK = "IBK기업은행"
+    IBK = "IBK"
+    SHINHAN = "SHINHAN"
     
 class Currency(str, Enum):
     USD = "USD"
