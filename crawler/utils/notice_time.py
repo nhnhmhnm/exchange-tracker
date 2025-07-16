@@ -4,7 +4,7 @@ from datetime import datetime
 # 고시완료 시각
 # 성공하면 시각 파싱 후 저장, 실패하면 현재 시각 저장
 def parse_notice_time(text: str) -> datetime:
-    try :
+    try:
         match = re.search(r"(\d{1,2}):(\d{2}):(\d{2})", text)
         if match:
             hour, minute, second = map(int, match.groups())
