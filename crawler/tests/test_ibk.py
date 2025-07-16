@@ -7,7 +7,7 @@ def test_get_ibk_USD():
 
     # 환율을 제대로 가져왔는지 확인
     if result:
-        assert result["bank"] == "IBK기업은행"
+        assert result["bank"] == "IBK"
         assert result["currency"] == "USD"
         assert isinstance(result["rate"], float)
     else:
