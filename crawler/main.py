@@ -1,16 +1,8 @@
 from banks.ibk import get_ibk
-from utils.enums import Currency
+from banks.shinhan import get_shinhan
+from utils.crawler import crawl_all
 from utils.DBconnect import insert_rate
+from utils.enums import Bank, Currency
 
-def crawl_ibk():
-    for currency in Currency :
-        rates = get_ibk(currency)
-
-        if rates :
-            insert_rate(**rates)
-            print(f"[SUCCESS] {currency.value} 저장 완료")
-        else:
-            print(f"[FAIL] {currency.value} 저장 실패")
-
-if __name__ == "__main__" :
-    crawl_ibk()
+if __name__ == "__main__":
+    crawl_all()
