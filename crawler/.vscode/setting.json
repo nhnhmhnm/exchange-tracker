@@ -1,6 +1,0 @@
-{
-  "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["crawler/tests"],
-  "python.analysis.extraPaths": ["crawler"],
-  "python.envFile": "${workspaceFolder}/.env"
-}

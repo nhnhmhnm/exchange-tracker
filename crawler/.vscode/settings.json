@@ -1,4 +1,6 @@
 {
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.analysis.extraPaths": ["crawler"],
     "python.testing.pytestArgs": [
         "tests"
     ],
