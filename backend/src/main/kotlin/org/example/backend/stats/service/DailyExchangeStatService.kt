@@ -10,7 +10,7 @@ class DailyExchangeStatService(
     private val dailyStatsRepository: DailyExchangeStatRepository
 ) {
     @Transactional
-    fun findStats(date: LocalDate) {
+    fun getStat(date: LocalDate) {
         val stat = dailyStatsRepository.getStatByDate(date)
 
         if (stat != null) {
