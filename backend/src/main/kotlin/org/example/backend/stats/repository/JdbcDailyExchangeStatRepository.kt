@@ -9,7 +9,7 @@ import java.time.LocalDate
 class JdbcDailyExchangeStatRepository(
     private val jdbcTemplate: NamedParameterJdbcTemplate
 ) : DailyExchangeStatRepository {
-    override fun findStatsByDate(date: LocalDate): List<DailyExchangeStatResponse> {
+    override fun getStatByDate(date: LocalDate): DailyExchangeStatResponse? {
         val sql = """ 
              WITH sorted_rates AS (
                  SELECT
@@ -66,10 +66,10 @@ class JdbcDailyExchangeStatRepository(
                 startTime = rs.getTimestamp("start_time").toLocalDateTime(),
                 endTime = rs.getTimestamp("end_time").toLocalDateTime()
             )
-        }
+        }.firstOrNull()
     }
 
-    override fun saveStats(stats: List<DailyExchangeStatResponse>) {
+    override fun saveStat(stats: DailyExchangeStatResponse) {
         val sql = """
             INSERT INTO daily_exchange_stats (
                 bank_id, currency_id, lowest_rate, median_rate, highest_rate, start_time, end_time
@@ -83,18 +83,15 @@ class JdbcDailyExchangeStatRepository(
                 start_time = VALUES(start_time),
                 end_time = VALUES(end_time)
         """
-        val params = stats.map {
-            mapOf(
-                "bankId" to it.bankId,
-                "currencyId" to it.currencyId,
-                "lowestRate" to it.lowestRate,
-                "medianRate" to it.medianRate,
-                "highestRate" to it.highestRate,
-                "startTime" to it.startTime,
-                "endTime" to it.endTime
-            )
-        }
-
-        jdbcTemplate.batchUpdate(sql, params.toTypedArray())
+        val params = mapOf(
+            "bankId" to stats.bankId,
+            "currencyId" to stats.currencyId,
+            "lowestRate" to stats.lowestRate,
+            "medianRate" to stats.medianRate,
+            "highestRate" to stats.highestRate,
+            "startTime" to stats.startTime,
+            "endTime" to stats.endTime
+        )
+        jdbcTemplate.update(sql, params)
     }
 }

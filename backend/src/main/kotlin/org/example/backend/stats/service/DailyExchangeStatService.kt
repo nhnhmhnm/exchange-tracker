@@ -11,10 +11,10 @@ class DailyExchangeStatService(
 ) {
     @Transactional
     fun findStats(date: LocalDate) {
-        val stats = dailyStatsRepository.findStatsByDate(date)
+        val stat = dailyStatsRepository.getStatByDate(date)
 
-        if (stats.isNotEmpty()) {
-            dailyStatsRepository.saveStats(stats)
+        if (stat != null) {
+            dailyStatsRepository.saveStat(stat)
         }
     }
 }
