@@ -10,8 +10,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class DailyExchangeStatServiceTest : BehaviorSpec({
-//    val repository = mockk<DailyExchangeStatRepository>(relaxed = true)
-//    val service =DailyExchangeStatService(repository)
     lateinit var repository: DailyExchangeStatRepository
     lateinit var service: DailyExchangeStatService
 
@@ -34,8 +32,10 @@ class DailyExchangeStatServiceTest : BehaviorSpec({
 
         val slot = slot<DailyExchangeStatResponse>()
 
-        every { repository.getStatByDate(any()) } returns stat
-        every { repository.saveStat(capture(slot)) } just Runs
+        beforeTest {
+            every { repository.getStatByDate(any()) } returns stat
+            every { repository.saveStat(capture(slot)) } just Runs
+        }
 
         When("서비스가 실행되면") {
             service.getStat(date)
@@ -56,7 +56,9 @@ class DailyExchangeStatServiceTest : BehaviorSpec({
     Given("해당 날짜에 환율 데이터가 존재하지 않을 때") {
         val date = LocalDate.of(2025, 7, 17)
 
-        every { repository.getStatByDate(date) } returns null
+        beforeTest {
+            every { repository.getStatByDate(any()) } returns null
+        }
 
         When("서비스를 실행하면") {
             service.getStat(date)
