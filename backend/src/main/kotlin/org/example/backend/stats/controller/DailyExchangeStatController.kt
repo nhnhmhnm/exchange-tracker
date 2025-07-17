@@ -1,6 +1,5 @@
 package org.example.backend.stats.controller
 
-import org.example.backend.stats.dto.DailyExchangeStatResponse
 import org.example.backend.stats.service.DailyExchangeStatService
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
