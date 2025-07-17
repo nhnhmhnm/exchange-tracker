@@ -11,6 +11,6 @@ class DailyExchangeStatController(
 ) {
     @PostMapping
     fun postStats(@RequestParam date: LocalDate) {
-        dailyExchangeStatService.findStats(date)
+        dailyExchangeStatService.getStat(date)
     }
 }
